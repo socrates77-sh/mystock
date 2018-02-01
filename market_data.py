@@ -34,6 +34,7 @@ def stock_data_reader(stock_code, start='19000000', end='20171231'):
     res = requests.get(down_url, timeout=60)
     file_name = '%s.csv' % stock_code
     file_size = open(file_name, 'wb').write(res.content)
+    # return pd.read_csv(file_name,  index_col=0, encoding='gb2312')
     return pd.read_csv(file_name,  index_col=0, encoding='gb2312').sort_index()
 
 
