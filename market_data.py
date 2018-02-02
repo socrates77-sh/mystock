@@ -24,7 +24,7 @@ def regulate_date(date_string):
     return dt.strftime('%Y%m%d')
 
 
-def stock_data_reader(stock_code, start='19000000', end='20171231'):
+def stock_data_reader(stock_code, start='19000101', end='20201231'):
     url = 'http://quotes.money.163.com/service/chddata.html'
     fields = 'TCLOSE;PCHG'
     code_with_prefix = code_prefix(stock_code) + stock_code
