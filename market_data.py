@@ -51,4 +51,7 @@ def stock_data_reader(stock_code, start='19000101', end='21001231'):
     original_df = pd.read_csv(file_name,  index_col=0,
                               encoding='gb2312').sort_index()
     os.remove(file_name)
-    return get_useful_feilds(original_df)
+    if original_df['收盘价'].count() == 0:
+        return None
+    else:
+        return get_useful_feilds(original_df)

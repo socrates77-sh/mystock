@@ -46,6 +46,10 @@ def print_result(code, result):
 
 def get_share_result(code):
     stock_data = stock_data_reader(code)
+    if stock_data is None:
+        print('%06s is a new share without data' % code)
+        return None
+    
     analysis_data = calculat_average(stock_data)
     strategy_data = average_strategy(analysis_data)
     # if(strategy_data['year'].isnull()[-1]):
@@ -75,15 +79,18 @@ def read_code_list(list_file):
 
 
 def main():
-    list_file = 'position.csv'
-    list_file = 'concern.csv'
+    kind = 'all'
+    # kind = 'position'
+    # kind = 'concern'
+
+    list_file = kind + '.csv'
 
     results = pd.DataFrame()
     share_codes = read_code_list(list_file)
     for sc in share_codes:
         result = get_share_result(sc)
         results = results.append(result)
-    results.to_csv('result.csv')
+    results.to_csv('result_' + kind + '.csv')
 
 if __name__ == '__main__':
     main()
