@@ -44,14 +44,20 @@ def stock_data_reader(stock_code, start='19000101', end='21001231'):
     down_url = '%s?code=%s&start=%s&end=%s&fields=%s' % \
         (url, code_with_prefix, regulate_date(start), regulate_date(end),
          fields)
-    res = requests.get(down_url, timeout=60)
+    try:
+        res = requests.get(down_url)
+    except Exception as e:
+        print(e)
+        return None
     file_name = 'tmp.csv'
     file_size = open(file_name, 'wb').write(res.content)
     # return pd.read_csv(file_name,  index_col=0, encoding='gb2312')
     original_df = pd.read_csv(file_name,  index_col=0,
                               encoding='gb2312').sort_index()
-    os.remove(file_name)
+    # os.remove(file_name)
     if original_df['收盘价'].count() == 0:
         return None
+    # elif original_df['收盘价'][0] == 0:
+    #     return None
     else:
         return get_useful_feilds(original_df)

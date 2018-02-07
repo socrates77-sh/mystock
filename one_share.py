@@ -7,20 +7,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def get_value_counts(series):
+    if series.index.size == 2:
+        b = series[1]
+        s = series[0]
+    elif series.index == [0]:
+        b = 0
+        s = series[0]
+    else:
+        b = series[1]
+        s = 0
+    return (b, s)
+
+
 def get_position_days(strategy_data, days=0):
     pos_days = pd.DataFrame(index=avg_strategys, columns=['B', 'S'])
     for ast in avg_strategys:
         if days == 0:
-            pos_days['B'][ast] = strategy_data[ast].value_counts(1)[1]
-            pos_days['S'][ast] = strategy_data[ast].value_counts(1)[0]
+            b, s = get_value_counts(strategy_data[ast].value_counts(1))
         else:
-            pos_days['B'][ast] = strategy_data[ast][-days:].value_counts(1)[1]
-            pos_days['S'][ast] = strategy_data[ast][-days:].value_counts(1)[0]
+            b, s = get_value_counts(strategy_data[ast][-days:].value_counts(1))
+        pos_days['B'][ast] = b
+        pos_days['S'][ast] = s
     return pos_days
 
 
 def main():
-    code = '600349'
+    code = '002752'
     # code = '600029'
     stock_data = stock_data_reader(code)
     if stock_data is None:
