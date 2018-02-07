@@ -5,6 +5,8 @@ from gain import *
 import pandas as pd
 import numpy as np
 import csv
+import msvcrt
+# import getch
 
 
 def one_period_index(period):
@@ -49,7 +51,7 @@ def get_share_result(code):
     if stock_data is None:
         print('%06s is a new share without data' % code)
         return None
-    
+
     analysis_data = calculat_average(stock_data)
     strategy_data = average_strategy(analysis_data)
     # if(strategy_data['year'].isnull()[-1]):
@@ -78,8 +80,30 @@ def read_code_list(list_file):
     return codes
 
 
+def get_choice():
+    print('Choose:')
+    print('[1]: position')
+    print('[2]: concern')
+    print('[3]: all')
+    print('press other key to quit')
+    return msvcrt.getch()
+
+
 def main():
-    kind = 'all'
+    key = get_choice()
+    if key == b'1':
+        kind = 'position'
+    elif key == b'2':
+        kind = 'concern'
+    elif key == b'3':
+        kind = 'all'
+    else:
+        return
+
+    print('=' * 50)
+    print(kind)
+    print('=' * 50)
+    # kind = 'all'
     # kind = 'position'
     # kind = 'concern'
 
