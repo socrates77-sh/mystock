@@ -45,18 +45,25 @@ def stock_data_reader(stock_code, start='19000101', end='21001231'):
         (url, code_with_prefix, regulate_date(start), regulate_date(end),
          fields)
     try:
-        res = requests.get(down_url)
+        res = requests.get(down_url, timeout=30)
     except Exception as e:
         print(e)
         return None
     file_name = 'tmp.csv'
     file_size = open(file_name, 'wb').write(res.content)
     # return pd.read_csv(file_name,  index_col=0, encoding='gb2312')
-    original_df = pd.read_csv(file_name,  index_col=0,
-                              encoding='gb2312').sort_index()
-    # os.remove(file_name)
-    if original_df['收盘价'].count() == 0:
+    try:
+        original_df = pd.read_csv(file_name,  index_col=0,
+                                  encoding='gb2312').sort_index()
+    except Exception as e:
+        print(e)
         return None
+    # os.remove(file_name)
+    if(original_df['收盘价'].count() < 500):
+        # print('%06s no enough data' % code)
+        return None
+    # if original_df['收盘价'].count() == 0:
+    #     return None
     # elif original_df['收盘价'][0] == 0:
     #     return None
     else:

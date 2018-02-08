@@ -49,15 +49,15 @@ def print_result(code, result):
 def get_share_result(code):
     stock_data = stock_data_reader(code)
     if stock_data is None:
-        print('%06s is a new share without data' % code)
-        return None
+        print('%06s no enough data [1]' % code)
+        return
 
     analysis_data = calculat_average(stock_data)
     strategy_data = average_strategy(analysis_data)
-    # if(strategy_data['year'].isnull()[-1]):
+
     if(strategy_data['前复权'].count() < 500):
-        print('%06s is a new share without enough data' % code)
-        return None
+        print('%06s no enough data [2]' % code)
+        return
 
     all_gain = get_all_gain(strategy_data)
     result = pd.DataFrame(index=["'" + code], columns=gen_index())
@@ -103,9 +103,6 @@ def main():
     print('=' * 50)
     print(kind)
     print('=' * 50)
-    # kind = 'all'
-    # kind = 'position'
-    # kind = 'concern'
 
     list_file = kind + '.csv'
 
