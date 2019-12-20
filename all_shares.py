@@ -33,7 +33,16 @@ def fill_result_by_period(result, all_gain, strategy_data, period):
         result[ast + '-' + period][0] = all_gain.loc[ast][period]
     result['avg-' + period] = all_gain.mean()[period]
     result['max-' + period] = all_gain.max()[period]
-    strategy = all_gain[period].argmax()
+    # strategy = all_gain[period].argmax()
+    # a = all_gain[period]
+    # print(a)
+    # idx = a.values.argmax()
+    # print(idx)
+    # print(a.index[idx])
+    strategy_idx = all_gain[period].values.argmax()
+    strategy = all_gain[period].index[strategy_idx]
+    # print(strategy)
+
     result['strategy-' + period] = strategy
     bs = 'B' if strategy_data[strategy][-1] == 1 else 'S'
     result['bs-' + period] = bs
@@ -65,9 +74,9 @@ def get_share_result(code):
     fill_result_by_period(result, all_gain, strategy_data, '250d')
     fill_result_by_period(result, all_gain, strategy_data, '500d')
     fill_result_by_period(result, all_gain, strategy_data, 'all')
-    # analysis_data.to_csv('a.csv')
-    # strategy_data.to_csv('s.csv')
-    # all_gain.to_csv('g.csv')
+    analysis_data.to_csv('a.csv')
+    strategy_data.to_csv('s.csv')
+    all_gain.to_csv('g.csv')
     print_result(code, result)
     return result
 
@@ -111,7 +120,9 @@ def main():
     for sc in share_codes:
         result = get_share_result(sc)
         results = results.append(result)
-    results.to_csv('result_' + kind + '.csv')
+    # print(results)
+    results.to_csv('result_' + kind + '.csv', encoding='gb2312')
+
 
 if __name__ == '__main__':
     main()

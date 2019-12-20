@@ -55,6 +55,7 @@ def stock_data_reader(stock_code, start='19000101', end='21001231'):
     try:
         original_df = pd.read_csv(file_name,  index_col=0,
                                   encoding='gb2312').sort_index()
+        # original_df = pd.read_csv(file_name,  index_col=0).sort_index()
     except Exception as e:
         print(e)
         return None
